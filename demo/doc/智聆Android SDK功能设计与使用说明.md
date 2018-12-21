@@ -1,11 +1,9 @@
-# 智聆口语评测Android SDK功能设计与使用说明文档
+# 智聆Android SDK功能设计与使用说明
 ## 一、 概述
 腾讯云智聆口语评测（Smart Oral Evaluation）英语口语评测服务，是基于英语口语类教育培训场景和腾讯云的语音处理技术，应用特征提取、声学模型和语音识别算法，为儿童和成人提供高准确度的英语口语发音评测。支持单词和句子模式的评测，多维度反馈口语表现。支持单词和句子评测模式，可广泛应用于英语口语类教学应用中。
 本SDK为智聆口语测评的Android版本，封装了对智聆口语测评网络API的调用及本地音频文件处理，并提供简单的录音功能，使用者可以专注于从业务切入，方便简洁地进行二次开发。
 本文档只对Android SDK进行描述，详细的网络API说明请见在线文档https://cloud.tencent.com/document/product/884
 ## 二、使用说明
-#### 2.1 工程及demo源码目录
-https://github.com/TencentCloud/tencentcloud-sdk-android-soe
 #### 2.1 文件说明
 本SDK的主文件为tencentsoe-sdk-release.aar，直接引入项目中即可
 若需要调用MP3录音功能，则还需引入mp3recorder.aar
@@ -24,103 +22,7 @@ android.permission.RECORD_AUDIO
 android.permission.READ_EXTERNAL_STORAGE
 android.permission.WRITE_EXTERNAL_STORAGE
 ```
-#### 2.4 获取密钥
-
-secretId和secretKey是使用SDK的安全凭证，通过以下方式获取
-
-![](http://dldir1.qq.com/hudongzhibo/taisdk/document/taisdk_cloud_1.png)
-
-## 三、 使用示例
-#### 3.1 开始录音
-```java
-TencentSOE.startRecordMp3(Environment.getExternalStorageDirectory().getAbsolutePath() + "/SOE/", "soe");
-```
-#### 3.2 停止录音
-```java
-TencentSOE.stopRecord();
-```
-#### 3.3 验证MP3文件格式
-```java
-String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/SOE/soe.mp3";
-try {
-    TencentSOE.checkMP3Format(filePath);
-} catch (Exception e) {
-    sendMessage(MSG_ERROR, e.getMessage());
-}
-```
-#### 3.4 文件转Base64字串
-```java
-String base64String = TencentSOE.encodeAudioFile(filePath);
-```
-#### 3.5 文件转Base64字串数组
-```java
-ArrayList<String> base64StringArray = TencentSOE.encodeAudioFile(filePath, 512 * 1024);
-```
-#### 3.6 创建回调
-```java
-    private SOECallback callback = new SOECallback() {
-        public void onInitSuccess(InitOralProcessResponse response) {
-            sendMessage(MSG_INIT_OK, response.toString());
-        }
-
-        public void onTransmitSuccess(int index, int isEnd, TransmitOralProcessResponse response) {
-            Message msg = new Message();
-            msg.what = MSG_TRANSMIT_OK;
-            msg.arg1 = index;
-            msg.arg2 = isEnd;
-            msg.obj = response.toString();
-            mMyHandler.sendMessage(msg);
-        }
-
-        public void onError(SOEError e) {
-            sendMessage(MSG_INIT_ERROR, e.getMessage());
-        }
-    };
-```
-#### 3.7 执行一次性评估
-```java
-String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/SOE/soe.wav";
-String base64String = TencentSOE.encodeAudioFile(filePath);
-TencentSOE.newInstance(SECRET_ID, SECRET_KEY)
-          .setRefText(RefText)
-          .setEvalMode(TencentSOE.EVAL_MODE_WORD)
-          .setScoreCoeff(1.0f)
-          .setVoiceFileType(TencentSOE.AUDIO_TYPE_WAV)
-          .setUserVoiceData(base64String)
-          .execute(callback);
-```
-#### 3.8 执行流式评估
-```java
-String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/SOE/soe.wav";
-ArrayList<String> base64StringArray = TencentSOE.encodeAudioFile(filePath, 512 * 1024);
-TencentSOE.newInstance(SECRET_ID, SECRET_KEY)
-          .setRefText(RefText)
-          .setEvalMode(TencentSOE.EVAL_MODE_WORD)
-          .setScoreCoeff(1.0f)
-          .setVoiceFileType(TencentSOE.AUDIO_TYPE_WAV)
-          .setUserVoiceData(base64StringArray)// 或直接setUserVoiceData(filePath, 512 * 1024)
-          .execute(callback);
-```
-#### 3.9 开启边录边传
-```java
-TencentSOE.newInstance(SECRET_ID, SECRET_KEY)
-        .setRootUrl("soe.ap-guangzhou.tencentcloudapi.com/")// 非必要
-        .setRegion("ap-guangzhou")// 非必要
-        .setSoeAppId("default")// 非必要
-        .setRefText(RefText)
-        .setEvalMode(evalMode)
-        .setWorkMode(TencentSOE.WORK_MODE_STREAM)
-        .setScoreCoeff(1.0f)
-        .setVoiceFileType(TencentSOE.AUDIO_TYPE_MP3)
-        .setIsLongLifeSession(TencentSOE.SESSION_LIFE_SHORT)
-        .setCallBack(callback)
-        .startFrameRecord();
-```
-#### 3.10 停止边录边传
-```java
-TencentSOE.stopFrameRecord();
-```
-## 四、 接口设计说明
+## 三、 接口设计
 本SDK的主入口类为TencentSOE，以下方法皆从该类中调用
 本SDK支持链式调用，如无特殊说明，所有方法的返回值皆为TencentSOE实例
 ##### TencentSOE newInstance(String SECRET_ID, String SECRET_KEY)
@@ -220,3 +122,93 @@ response 回调消息体
 ###### void onError(SOEError error);
 **功能**：异常回调
 **参数**：error 异常或失败内容
+## 四、 使用示例
+#### 4.1 开始录音
+```java
+TencentSOE.startRecordMp3(Environment.getExternalStorageDirectory().getAbsolutePath() + "/SOE/", "soe");
+```
+#### 4.2 停止录音
+```java
+TencentSOE.stopRecord();
+```
+#### 4.3 验证MP3文件格式
+```java
+String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/SOE/soe.mp3";
+try {
+    TencentSOE.checkMP3Format(filePath);
+} catch (Exception e) {
+    sendMessage(MSG_ERROR, e.getMessage());
+}
+```
+#### 4.4 文件转Base64字串
+```java
+String base64String = TencentSOE.encodeAudioFile(filePath);
+```
+#### 4.5 文件转Base64字串数组
+```java
+ArrayList<String> base64StringArray = TencentSOE.encodeAudioFile(filePath, 512 * 1024);
+```
+#### 4.6 创建回调
+```java
+    private SOECallback callback = new SOECallback() {
+        public void onInitSuccess(InitOralProcessResponse response) {
+            sendMessage(MSG_INIT_OK, response.toString());
+        }
+
+        public void onTransmitSuccess(int index, int isEnd, TransmitOralProcessResponse response) {
+            Message msg = new Message();
+            msg.what = MSG_TRANSMIT_OK;
+            msg.arg1 = index;
+            msg.arg2 = isEnd;
+            msg.obj = response.toString();
+            mMyHandler.sendMessage(msg);
+        }
+
+        public void onError(SOEError e) {
+            sendMessage(MSG_INIT_ERROR, e.getMessage());
+        }
+    };
+```
+#### 4.7 执行一次性评估
+```java
+String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/SOE/soe.wav";
+String base64String = TencentSOE.encodeAudioFile(filePath);
+TencentSOE.newInstance(SECRET_ID, SECRET_KEY)
+          .setRefText(RefText)
+          .setEvalMode(TencentSOE.EVAL_MODE_WORD)
+          .setScoreCoeff(1.0f)
+          .setVoiceFileType(TencentSOE.AUDIO_TYPE_WAV)
+          .setUserVoiceData(base64String)
+          .execute(callback);
+```
+#### 4.8 执行流式评估
+```java
+String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/SOE/soe.wav";
+ArrayList<String> base64StringArray = TencentSOE.encodeAudioFile(filePath, 512 * 1024);
+TencentSOE.newInstance(SECRET_ID, SECRET_KEY)
+          .setRefText(RefText)
+          .setEvalMode(TencentSOE.EVAL_MODE_WORD)
+          .setScoreCoeff(1.0f)
+          .setVoiceFileType(TencentSOE.AUDIO_TYPE_WAV)
+          .setUserVoiceData(base64StringArray)// 或直接setUserVoiceData(filePath, 512 * 1024)
+          .execute(callback);
+```
+#### 4.9 开启边录边传
+```java
+TencentSOE.newInstance(SECRET_ID, SECRET_KEY)
+        .setRootUrl("soe.ap-guangzhou.tencentcloudapi.com/")// 非必要
+        .setRegion("ap-guangzhou")// 非必要
+        .setSoeAppId("default")// 非必要
+        .setRefText(RefText)
+        .setEvalMode(evalMode)
+        .setWorkMode(TencentSOE.WORK_MODE_STREAM)
+        .setScoreCoeff(1.0f)
+        .setVoiceFileType(TencentSOE.AUDIO_TYPE_MP3)
+        .setIsLongLifeSession(TencentSOE.SESSION_LIFE_SHORT)
+        .setCallBack(callback)
+        .startFrameRecord();
+```
+#### 5.0 停止边录边传
+```java
+TencentSOE.stopFrameRecord();
+```
