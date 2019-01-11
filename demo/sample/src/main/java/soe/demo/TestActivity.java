@@ -156,6 +156,7 @@ public class TestActivity extends Activity {
                     .setEvalMode(evalMode)
                     .setScoreCoeff(1.0f)
                     .setIsLongLifeSession(TencentSOE.SESSION_LIFE_LONG)
+                    .setStorageMode(0)
                     .setVoiceFileType(fileType)
                     .setUserVoiceData(base64StringArray)// 或直接setUserVoiceData(filePath, 9 * 1024)
                     .execute(callback);
@@ -184,6 +185,7 @@ public class TestActivity extends Activity {
                     .setEvalMode(evalMode)
                     .setScoreCoeff(1.0f)
                     .setIsLongLifeSession(TencentSOE.SESSION_LIFE_LONG)
+                    .setStorageMode(0)
                     .setVoiceFileType(fileType)
                     .setUserVoiceData(base64String)
                     .execute(callback);
@@ -321,6 +323,7 @@ public class TestActivity extends Activity {
                                 .setScoreCoeff(1.0f)
                                 .setVoiceFileType(TencentSOE.AUDIO_TYPE_MP3)
                                 .setIsLongLifeSession(TencentSOE.SESSION_LIFE_SHORT)
+                                .setStorageMode(0)
                                 .setCallBack(callback)
                                 .startFrameRecord();
 
