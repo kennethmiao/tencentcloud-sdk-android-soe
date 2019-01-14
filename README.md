@@ -148,6 +148,9 @@ TencentSOE.EVAL_MODE_SENTENCE：句子模式，提供完整度和流利度信息
 ##### TencentSOE setIsLongLifeSession(int isLongLifeSession)
 **功能**：设置长效session标识
 **参数**：isLongLifeSession 当该参数为1时，session的持续时间为300s，但会一定程度上影响第一个数据包的返回速度
+##### TencentSOE setStorageMode(String storageMode)
+**功能**：设置音频存储模式
+**参数**：storageMode 0：不存储，1：存储到公共对象存储，输出结果为该会话最后一个分片TransmitOralProcess 返回结果 AudioUrl 字段
 ##### TencentSOE setVoiceFileType(int voiceFileType)
 **功能**：设置语音文件类型
 **参数**：voiceFileType 语音文件类型，可选以下值
