@@ -13,7 +13,7 @@ secretId和secretKey是使用SDK的安全凭证，通过以下方式获取
 
 #### 1、导入SDK
 
-[Demo源码下载](http://dldir1.qq.com/hudongzhibo/taisdk/sdk/android/TAIDemo.zip)
+[Demo源码下载](https://github.com/TencentCloud/tencentcloud-sdk-android-soe)
 
 在build.gradle引入依赖包
 
