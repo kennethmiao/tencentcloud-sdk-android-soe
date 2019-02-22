@@ -212,7 +212,7 @@ public String getStringToSign(long timestamp);
 * TAIMathCorrectionRet参数说明
 
 | 参数|类型|说明 |
-|---|---|---|---|
+|---|---|---|
 |sessionId|String|一次批改唯一标识|
 |formula|String|算式|
 |items|List<TAIMathCorrectionItem>|算式结果|
@@ -221,7 +221,7 @@ public String getStringToSign(long timestamp);
 * TAIMathCorrectionItem参数说明
 
 | 参数|类型|说明 |
-|---|---|---|---|
+|---|---|---|
 |result|boolean|算式结果|
 |rect|Rect|算式坐标|
 |formula|String|算式字符串|
@@ -245,7 +245,7 @@ public String getStringToSign(long timestamp);
 * TAIOralEvaluationData参数说明
 
 | 参数|类型|说明 |
-|---|---|---|---|
+|---|---|---|
 |seqId|NSInteger|分片序列号|
 |bEnd|BOOL|是否最后一个分片|
 |audio|NSData|音频数据|
@@ -254,7 +254,7 @@ public String getStringToSign(long timestamp);
 * TAIMathCorrectionRet参数说明
 
 | 参数|类型|说明 |
-|---|---|---|---|
+|---|---|---|
 |sessionId|String|一次批改唯一标识|
 |pronAccuracy|double|发音精准度，取值范围[-1, 100]，当取-1时指完全不匹配|
 |pronFluency|double|发音流利度，取值范围[0, 1]，当为词模式时，取值无意义|
@@ -265,7 +265,7 @@ public String getStringToSign(long timestamp);
 * TAIOralEvaluationWord参数说明
 
 | 参数|类型|说明 |
-|---|---|---|---|
+|---|---|---|
 |beginTime|int|当前单词语音起始时间点，单位为ms|
 |endTime|int|当前单词语音终止时间点，单位为ms|
 |pronAccuracy|double|单词发音准确度，取值范围[-1, 100]，当取-1时指完全不匹配|
